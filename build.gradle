@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'maow.hacknetconsole4j.HacknetConsole4j'
+    }
+}
+
+group = 'maow'
+version = '1.0.0'
+archivesBaseName = 'hacknetconsole4j'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+
