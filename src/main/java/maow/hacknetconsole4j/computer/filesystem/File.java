@@ -1,6 +1,6 @@
 package maow.hacknetconsole4j.computer.filesystem;
 
-import maow.hacknetconsole4j.computer.program.Program;
+import maow.hacknetconsole4j.program.Program;
 
 public class File {
     private final String fileName;

@@ -28,10 +28,8 @@ public class ScpCommand implements Command {
                 if (activeAccount.getType() == AccountType.ADMIN || activeAccount.getType() == AccountType.ALL) {
                     for (File file : activeFolder.getFiles()) {
                         if (file.getFileName().equals(args[1])) {
-                            if (file.getAssociatedProgram() != null) {
-                                Terminal.addLocalFile(file);
-                                System.out.println("Downloaded " + file.getFileName() + " from " + node.getIpAddress() + ".");
-                            }
+                            Terminal.addLocalFile(file);
+                            System.out.println("Downloaded " + file.getFileName() + " from " + node.getIpAddress() + ".");
                             return;
                         }
                     }

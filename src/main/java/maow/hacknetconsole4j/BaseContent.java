@@ -8,9 +8,10 @@ import maow.hacknetconsole4j.computer.account.AccountType;
 import maow.hacknetconsole4j.computer.filesystem.File;
 import maow.hacknetconsole4j.computer.filesystem.Filesystem;
 import maow.hacknetconsole4j.computer.filesystem.Folder;
-import maow.hacknetconsole4j.computer.program.CrackProgram;
-import maow.hacknetconsole4j.computer.program.PortHackProgram;
-import maow.hacknetconsole4j.computer.program.SSLTrojanProgram;
+import maow.hacknetconsole4j.program.ClockProgram;
+import maow.hacknetconsole4j.program.CrackProgram;
+import maow.hacknetconsole4j.program.PortHackProgram;
+import maow.hacknetconsole4j.program.SSLTrojanProgram;
 import maow.hacknetconsole4j.registry.CommandRegistry;
 import maow.hacknetconsole4j.registry.NodeRegistry;
 import maow.hacknetconsole4j.registry.ProgramRegistry;
@@ -50,17 +51,13 @@ public class BaseContent {
         ProgramRegistry.register(new CrackProgram("FTPBounce", 21, 8000));
         ProgramRegistry.register(new CrackProgram("SMTPoverflow", 25, 5000));
         ProgramRegistry.register(new CrackProgram("WebServerWorm", 80, 7000));
+        ProgramRegistry.register(new CrackProgram("L33tCr4ck3r", 1337, 1000));
         ProgramRegistry.register(new SSLTrojanProgram());
         ProgramRegistry.register(new PortHackProgram());
+        ProgramRegistry.register(new ClockProgram());
     }
 
     private static void registerNodes() {
-        NodeRegistry.register(new Node.Builder()
-                .setName("Node")
-                .setIpAddress("127.0.0.1")
-                .build()
-        );
-
         NodeRegistry.register(new Node.Builder()
                 .setName("Test PC")
                 .setIpAddress("111.111.111.111")
@@ -90,6 +87,30 @@ public class BaseContent {
                 .setProxySettings(5000)
                 .setLinkedNodes(new Node[]{
                         NodeRegistry.get("127.0.0.1"),
+                })
+                .build()
+        );
+
+        NodeRegistry.register(new Node.Builder()
+                .setName("Cheater's Stash")
+                .setIpAddress("1337.1337.1337.1337")
+                .setPorts(new Port[]{
+                        new Port(1337, "L33t"),
+                })
+                .setPortsToCrack(0)
+                .setFilesystem(new Filesystem(new Folder[]{
+                        new Folder("/", new File[]{
+                                new File("SSHcrack.exe", "10101", ProgramRegistry.get("SSHcrack")),
+                                new File("FTPBounce.exe", "10101", ProgramRegistry.get("FTPBounce")),
+                                new File("SMTPoverflow.exe", "10101", ProgramRegistry.get("SMTPoverflow")),
+                                new File("WebServerWorm.exe", "10101", ProgramRegistry.get("WebServerWorm")),
+                                new File("SQLTrojan.exe", "10101", ProgramRegistry.get("SSLTrojan")),
+                                new File("L33tCr4ck3r.exe", "10101", ProgramRegistry.get("L33tCr4ck3r")),
+                                new File("Clock.exe", "10101", ProgramRegistry.get("Clock"))
+                        })
+                }))
+                .setAccounts(new Account[]{
+                        new Account("maow", "pass", AccountType.ADMIN),
                 })
                 .build()
         );

@@ -1,6 +1,6 @@
 package maow.hacknetconsole4j.registry;
 
-import maow.hacknetconsole4j.computer.program.Program;
+import maow.hacknetconsole4j.program.Program;
 
 import java.util.HashMap;
 

@@ -3,7 +3,7 @@ package maow.hacknetconsole4j;
 import maow.hacknetconsole4j.command.Command;
 import maow.hacknetconsole4j.computer.Node;
 import maow.hacknetconsole4j.computer.filesystem.File;
-import maow.hacknetconsole4j.computer.program.Program;
+import maow.hacknetconsole4j.program.Program;
 import maow.hacknetconsole4j.registry.CommandRegistry;
 import maow.hacknetconsole4j.registry.ProgramRegistry;
 

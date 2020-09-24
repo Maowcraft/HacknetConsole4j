@@ -2,7 +2,7 @@ package maow.hacknetconsole4j.command;
 
 import maow.hacknetconsole4j.Terminal;
 import maow.hacknetconsole4j.computer.filesystem.File;
-import maow.hacknetconsole4j.computer.program.Program;
+import maow.hacknetconsole4j.program.Program;
 import maow.hacknetconsole4j.registry.ProgramRegistry;
 
 public class ExeCommand implements Command {
