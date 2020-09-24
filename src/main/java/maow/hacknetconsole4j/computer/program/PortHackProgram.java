@@ -26,8 +26,9 @@ public class PortHackProgram implements Program {
                 if (port.isOpen()) openPorts++;
             }
             if (openPorts >= node.getPortsToCrack()) {
-                System.out.println("Computer " + node.getIpAddress() + " cracked.");
                 node.crack();
+                System.out.println("Computer " + node.getIpAddress() + " cracked.");
+                System.out.println("Logged in.\nWelcome, " + node.getActiveAccount().getUsername() + ".");
             } else {
                 System.out.println("Crack requires " + node.getPortsToCrack() + " open ports.");
             }

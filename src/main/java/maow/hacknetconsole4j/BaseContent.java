@@ -24,14 +24,16 @@ public class BaseContent {
 
     private static void registerCommands() {
         CommandRegistry.register(new HelpCommand());
-        CommandRegistry.register(new ConnectCommand());
+        CommandRegistry.register(new ExeCommand());
         CommandRegistry.register(new ProbeCommand());
+        CommandRegistry.register(new ConnectCommand());
+        CommandRegistry.register(new DcCommand());
+        CommandRegistry.register(new LoginCommand());
+        CommandRegistry.register(new ScanCommand());
         CommandRegistry.register(new CatCommand());
         CommandRegistry.register(new CdCommand());
         CommandRegistry.register(new LsCommand());
-        CommandRegistry.register(new LoginCommand());
         CommandRegistry.register(new ScpCommand());
-        CommandRegistry.register(new ExeCommand());
         CommandRegistry.register(new ShellCommand());
         CommandRegistry.register(new BypassCommand());
         CommandRegistry.register(new AnalyzeCommand());
@@ -63,10 +65,11 @@ public class BaseContent {
                 .setName("Test PC")
                 .setIpAddress("111.111.111.111")
                 .setPorts(new Port[]{
-                        new Port(80, "HTTP"),
                         new Port(22, "SSH"),
-                        new Port(443, "SSL"),
+                        new Port(21, "FTP"),
                         new Port(25, "SMTP"),
+                        new Port(80, "HTTP"),
+                        new Port(443, "SSL"),
                 })
                 .setPortsToCrack(4)
                 .setFilesystem(new Filesystem(new Folder[]{
@@ -85,6 +88,9 @@ public class BaseContent {
                 })
                 .setFirewallSettings("morpheus", 50)
                 .setProxySettings(5000)
+                .setLinkedNodes(new Node[]{
+                        NodeRegistry.get("127.0.0.1"),
+                })
                 .build()
         );
     }

@@ -4,8 +4,6 @@ import maow.hacknetconsole4j.Terminal;
 import maow.hacknetconsole4j.computer.Node;
 import maow.hacknetconsole4j.computer.filesystem.Folder;
 
-import java.util.Objects;
-
 public class CdCommand implements Command {
     @Override
     public String getName() {
@@ -20,24 +18,25 @@ public class CdCommand implements Command {
     @Override
     public void run(String[] args) {
         Node node = Terminal.getConnectedNode();
-        if (node != null && args.length > 1) {
-            if (node.getFilesystem() != null && node.getFilesystem().getFolders() != null) {
+        if (node != null) {
+            if (args.length > 1) {
+                boolean foundFolder = false;
                 Folder activeFolder = node.getActiveFolder();
-                if (activeFolder == null) {
-                    node.setActiveFolder(node.getFilesystem().getFolders()[0]);
-                }
-                if (Objects.requireNonNull(activeFolder).getNestedFolders() != null) {
-                    for (Folder folder : activeFolder.getNestedFolders()) {
-                        if (folder.getName().equals(args[1])) {
-                            System.out.println("Moved to " + folder.getName() + ".");
-                            node.setActiveFolder(folder);
-                        }
-                        return;
+                for (Folder folder : activeFolder.getNestedFolders()) {
+                    if (folder.getName().equals(args[1])) {
+                        System.out.println("Moved to " + folder.getName() + ".");
+                        node.setActiveFolder(folder);
+                        foundFolder = true;
                     }
                 }
+                if (!foundFolder) {
+                    System.out.println("Folder " + args[1] + " not found.");
+                }
             } else {
-                System.out.println("This filesystem contains no folders.");
+                System.out.println("Incorrect syntax.\nSyntax: cd <folder>");
             }
+        } else {
+            System.out.println("You are not connected to a node.");
         }
     }
 }

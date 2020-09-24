@@ -18,10 +18,10 @@ public class LoginCommand implements Command {
     @Override
     public void run(String[] args) {
         Node node = Terminal.getConnectedNode();
-        if (node != null && args.length > 2) {
-            String username = args[1];
-            String password = args[2];
-            if (node.getAccounts() != null) {
+        if (node != null) {
+            if (args.length > 2) {
+                String username = args[1];
+                String password = args[2];
                 for (Account account : node.getAccounts()) {
                     if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
                         node.setActiveAccount(account);
@@ -32,8 +32,10 @@ public class LoginCommand implements Command {
                     return;
                 }
             } else {
-                System.out.println("This node has no accounts.");
+                System.out.println("Incorrect syntax.\nSyntax: login <username> <password>");
             }
+        } else {
+            System.out.println("You are not connected to a node.");
         }
     }
 }

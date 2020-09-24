@@ -5,29 +5,30 @@ import maow.hacknetconsole4j.computer.Node;
 import maow.hacknetconsole4j.computer.account.Account;
 import maow.hacknetconsole4j.computer.account.AccountType;
 
-public class ShellCommand implements Command {
+public class ScanCommand implements Command {
     @Override
     public String getName() {
-        return "shell";
+        return "scan";
     }
 
     @Override
     public String getDescription() {
-        return "Add active node to your shell list, requires admin.";
+        return "View all linked nodes on connected node.";
     }
 
     @Override
     public void run(String[] args) {
         Node node = Terminal.getConnectedNode();
         if (node != null) {
-            Account activeAccount = node.getActiveAccount();
-            if (activeAccount.getType() == AccountType.ADMIN || activeAccount.getType() == AccountType.ALL) {
-                if (!Terminal.getShells().contains(node)) {
-                    Terminal.addShell(node);
-                    System.out.println("Applied a shell to " + node.getIpAddress() + " successfully.");
+            Account account = node.getActiveAccount();
+            if (account.getType() == AccountType.ADMIN || account.getType() == AccountType.ALL) {
+                if (node.getLinkedNodes().length <= 0) {
+                    System.out.println("None found.");
                 } else {
-                    Terminal.removeShell(node);
-                    System.out.println("Removed shell from " + node.getIpAddress() + " successfully.");
+                    System.out.println("Scanning.");
+                    for (Node linkedNode : node.getLinkedNodes()) {
+                        System.out.println("Found: " + linkedNode.getName() + " (" + linkedNode.getIpAddress() + ")");
+                    }
                 }
             } else {
                 System.out.println("You have insufficient permissions to perform this action.");

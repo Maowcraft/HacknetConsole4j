@@ -15,7 +15,7 @@ public class HelpCommand implements Command {
 
     @Override
     public void run(String[] args) {
-        for (Command command : CommandRegistry.getAll()) {
+        for (Command command : CommandRegistry.getAll().values()) {
             System.out.println(command.getName() + " - " + command.getDescription());
         }
     }

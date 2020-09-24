@@ -21,29 +21,19 @@ public class LsCommand implements Command {
         Node node = Terminal.getConnectedNode();
         if (node != null) {
             Folder activeFolder = node.getActiveFolder();
-            if (activeFolder == null) {
-                if (node.getFilesystem() != null && node.getFilesystem().getFolders() != null) {
-                    node.setActiveFolder(node.getFilesystem().getFolders()[0]);
-                } else {
-                    System.out.println("This filesystem has no folders.");
-                    return;
+            System.out.println("Files in " + activeFolder.getName() + ":\n");
+            for (File file : activeFolder.getFiles()) {
+                if (file != null) {
+                    System.out.println(file.getFileName());
                 }
             }
-            System.out.println("Files in " + node.getActiveFolder().getName() + ":\n");
-            if (node.getActiveFolder().getFiles() != null) {
-                for (File file : node.getActiveFolder().getFiles()) {
-                    if (file != null) {
-                        System.out.println(file.getFileName());
-                    }
+            for (Folder folder : activeFolder.getNestedFolders()) {
+                if (folder != null) {
+                    System.out.println("<DIR> " + folder.getName());
                 }
             }
-            if (node.getActiveFolder().getNestedFolders() != null) {
-                for (Folder folder : node.getActiveFolder().getNestedFolders()) {
-                    if (folder != null) {
-                        System.out.println("<DIR> " + folder.getName());
-                    }
-                }
-            }
+        } else {
+            System.out.println("You are not connected to a node.");
         }
     }
 }

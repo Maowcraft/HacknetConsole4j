@@ -7,8 +7,6 @@ import maow.hacknetconsole4j.computer.account.AccountType;
 import maow.hacknetconsole4j.computer.filesystem.File;
 import maow.hacknetconsole4j.computer.filesystem.Folder;
 
-import java.util.Objects;
-
 public class CatCommand implements Command {
     @Override
     public String getName() {
@@ -23,22 +21,29 @@ public class CatCommand implements Command {
     @Override
     public void run(String[] args) {
         Node node = Terminal.getConnectedNode();
-        if (node != null && args.length > 1) {
-            Account activeAccount = node.getActiveAccount();
-            Folder activeFolder = node.getActiveFolder();
-            if (activeFolder == null) {
-                node.setActiveFolder(node.getFilesystem().getFolders()[0]);
-            }
-            if (activeAccount != null && (activeAccount.getType() == AccountType.ADMIN || activeAccount.getType() == AccountType.ALL)) {
-                for (File file : Objects.requireNonNull(activeFolder).getFiles()) {
-                    if (file.getFileName().equals(args[1])) {
-                        System.out.println(file.getFileContents());
+        if (node != null) {
+            if (args.length > 1) {
+                boolean fileFound = false;
+                Account activeAccount = node.getActiveAccount();
+                Folder activeFolder = node.getActiveFolder();
+                if (activeAccount.getType() == AccountType.ADMIN || activeAccount.getType() == AccountType.ALL) {
+                    for (File file : activeFolder.getFiles()) {
+                        if (file.getFileName().equals(args[1])) {
+                            System.out.println(file.getFileContents());
+                            fileFound = true;
+                        }
                     }
-                    return;
+                    if (!fileFound) {
+                        System.out.println("File " + args[1] + " not found.");
+                    }
+                } else {
+                    System.out.println("You have insufficient permissions to perform this action.");
                 }
             } else {
-                System.out.println("You have insufficient permissions to perform this action.");
+                System.out.println("Incorrect syntax.\nSyntax: cat <file>");
             }
+        } else {
+            System.out.println("You are not connected to a node.");
         }
     }
 }

@@ -18,11 +18,21 @@ public class ProbeCommand implements Command {
     @Override
     public void run(String[] args) {
         Node node = Terminal.getConnectedNode();
-        if (node != null && node.getPorts() != null) {
-            System.out.println("-- " + node.getName() + " --\nPorts:\n");
-            for (Port port : node.getPorts()) {
-                System.out.println(port.getPortNumber() + " - " + port.getPortName() + " - [" + (port.isOpen() ? "OPEN" : "CLOSED") + "]");
+        if (node != null) {
+            System.out.println("-- " + node.getName() + " --");
+            if (node.getFirewall() != null) {
+                System.out.println("[Firewall Active]");
             }
+            if (node.getProxy() != null) {
+                System.out.println("[Proxy Active]");
+            }
+            if (node.getPorts().length > 0) {
+                System.out.println("Ports:\n");
+                for (Port port : node.getPorts()) {
+                    System.out.println(port.getPortNumber() + " - " + port.getPortName() + " - [" + (port.isOpen() ? "OPEN" : "CLOSED") + "]");
+                }
+            }
+
             System.out.println("\nOpen Ports to Crack: " + node.getPortsToCrack());
         } else {
             System.out.println("You are not connected to a node.");

@@ -6,7 +6,6 @@ import maow.hacknetconsole4j.computer.filesystem.File;
 import maow.hacknetconsole4j.computer.program.Program;
 import maow.hacknetconsole4j.registry.CommandRegistry;
 import maow.hacknetconsole4j.registry.ProgramRegistry;
-import maow.hacknetconsole4j.util.ConsoleUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,7 @@ public class Terminal {
     private static Node connectedNode;
     private static final List<File> localFiles = new ArrayList<>();
     private static final List<Node> shells = new ArrayList<>();
+    private static final List<String> notes = new ArrayList<>();
 
     public static void runCommand(String fullCommand) {
         String[] args = fullCommand.split("\\s+");
@@ -56,7 +56,6 @@ public class Terminal {
         return connectedNode;
     }
     public static void setConnectedNode(Node node) {
-        ConsoleUtil.print("Connected to " + node.getIpAddress());
         connectedNode = node;
     }
     public static List<File> getLocalFiles() {
@@ -71,5 +70,14 @@ public class Terminal {
     }
     public static void removeShell(Node node) {
         shells.remove(node);
+    }
+    public static void addNote(String note) {
+        notes.add(note);
+    }
+    public static void removeNote(int index) {
+        notes.remove(index);
+    }
+    public static List<String> getNotes() {
+        return notes;
     }
 }

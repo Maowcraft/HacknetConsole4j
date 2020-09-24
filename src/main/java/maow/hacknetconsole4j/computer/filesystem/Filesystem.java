@@ -8,6 +8,11 @@ public class Filesystem {
     }
 
     public Folder[] getFolders() {
+        if (folders == null) {
+            return new Folder[]{
+                    new Folder("/", new File[]{})
+            };
+        }
         return folders;
     }
 }

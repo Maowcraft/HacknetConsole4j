@@ -11,13 +11,23 @@ public class Folder {
         this.nestedFolders = nestedFolders;
     }
 
+    public Folder(String name, File[] files) {
+        this(name, files, new Folder[]{});
+    }
+
     public String getName() {
         return name;
     }
     public File[] getFiles() {
+        if (files == null) {
+            return new File[]{};
+        }
         return files;
     }
     public Folder[] getNestedFolders() {
+        if (nestedFolders == null) {
+            return new Folder[]{};
+        }
         return nestedFolders;
     }
 }

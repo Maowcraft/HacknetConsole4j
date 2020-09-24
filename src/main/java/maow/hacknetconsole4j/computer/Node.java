@@ -2,6 +2,7 @@ package maow.hacknetconsole4j.computer;
 
 import maow.hacknetconsole4j.computer.account.Account;
 import maow.hacknetconsole4j.computer.account.AccountType;
+import maow.hacknetconsole4j.computer.filesystem.File;
 import maow.hacknetconsole4j.computer.filesystem.Filesystem;
 import maow.hacknetconsole4j.computer.filesystem.Folder;
 import maow.hacknetconsole4j.computer.security.Firewall;
@@ -16,8 +17,9 @@ public class Node {
     private final Filesystem filesystem;
     private final Firewall firewall;
     private final Proxy proxy;
+    private final Node[] linkedNodes;
 
-    private Node(String ipAddress, String name, Port[] ports, int portsToCrack, Account[] accounts, Filesystem filesystem, Firewall firewall, Proxy proxy) {
+    private Node(String ipAddress, String name, Port[] ports, int portsToCrack, Account[] accounts, Filesystem filesystem, Firewall firewall, Proxy proxy, Node[] linkedNodes) {
         this.ipAddress = ipAddress;
         this.name = name;
         this.ports = ports;
@@ -26,13 +28,68 @@ public class Node {
         this.filesystem = filesystem;
         this.firewall = firewall;
         this.proxy = proxy;
+        this.linkedNodes = linkedNodes;
     }
 
     private Account activeAccount;
     private Folder activeFolder;
 
-    public void crack() {
-        setActiveAccount(new Account("admin", "", AccountType.ADMIN));
+    public String getIpAddress() {
+        return ipAddress;
+    }
+    public String getName() {
+        return name;
+    }
+    public Port[] getPorts() {
+        if (ports == null) {
+            return new Port[]{};
+        }
+        return ports;
+    }
+    public int getPortsToCrack() { return portsToCrack; }
+    public Account[] getAccounts() {
+        if (accounts == null) {
+            return new Account[]{};
+        }
+        return accounts;
+    }
+    public Filesystem getFilesystem() {
+        if (filesystem == null) {
+            return new Filesystem(new Folder[]{});
+        }
+        return filesystem;
+    }
+    public Firewall getFirewall() {
+        return firewall;
+    }
+    public Proxy getProxy() {
+        return proxy;
+    }
+    public Node[] getLinkedNodes() {
+        if (linkedNodes == null) {
+            return new Node[]{};
+        }
+        return linkedNodes;
+    }
+    public Account getActiveAccount() {
+        if (activeAccount == null) {
+            return new Account("guest", "", AccountType.NONE);
+        }
+        return activeAccount;
+    }
+    public void setActiveAccount(Account activeAccount) {
+        this.activeAccount = activeAccount;
+    }
+    public Folder getActiveFolder() {
+        if (activeFolder == null && filesystem == null) {
+            return new Folder("/", new File[]{});
+        } else if (activeFolder == null) {
+            return filesystem.getFolders()[0];
+        }
+        return activeFolder;
+    }
+    public void setActiveFolder(Folder activeFolder) {
+        this.activeFolder = activeFolder;
     }
 
     public boolean isPortOpen(int portNumber) {
@@ -50,43 +107,17 @@ public class Node {
             }
         }
     }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-    public String getName() {
-        return name;
-    }
-    public Port[] getPorts() {
-        return ports;
-    }
-    public int getPortsToCrack() {
-        return portsToCrack;
-    }
-    public Account[] getAccounts() {
-        return accounts;
-    }
-    public Filesystem getFilesystem() {
-        return filesystem;
-    }
-    public Firewall getFirewall() {
-        return firewall;
-    }
-    public Proxy getProxy() {
-        return proxy;
-    }
-
-    public Account getActiveAccount() {
-        return activeAccount;
-    }
-    public void setActiveAccount(Account activeAccount) {
-        this.activeAccount = activeAccount;
-    }
-    public Folder getActiveFolder() {
-        return activeFolder;
-    }
-    public void setActiveFolder(Folder activeFolder) {
-        this.activeFolder = activeFolder;
+    public void crack() {
+        if (accounts == null || accounts.length == 0) {
+            setActiveAccount(new Account("admin", "", AccountType.ADMIN));
+        } else {
+            for (Account account : accounts) {
+                if (account.getType() == AccountType.ADMIN) {
+                    setActiveAccount(account);
+                    return;
+                }
+            }
+        }
     }
 
     public static class Builder {
@@ -98,6 +129,7 @@ public class Node {
         private Filesystem filesystem;
         private Firewall firewall;
         private Proxy proxy;
+        private Node[] linkedNodes;
 
         public Builder setIpAddress(String ipAddress) {
             this.ipAddress = ipAddress;
@@ -131,9 +163,13 @@ public class Node {
             this.proxy = new Proxy(speed);
             return this;
         }
+        public Builder setLinkedNodes(Node[] linkedNodes) {
+            this.linkedNodes = linkedNodes;
+            return this;
+        }
 
         public Node build() {
-            return new Node(ipAddress, name, ports, portsToCrack, accounts, filesystem, firewall, proxy);
+            return new Node(ipAddress, name, ports, portsToCrack, accounts, filesystem, firewall, proxy, linkedNodes);
         }
     }
 }

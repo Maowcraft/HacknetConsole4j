@@ -18,7 +18,7 @@ public class ExeCommand implements Command {
 
     @Override
     public void run(String[] args) {
-        for (Program program : ProgramRegistry.getAll()) {
+        for (Program program : ProgramRegistry.getAll().values()) {
             if (program.isBuiltIn()) {
                 System.out.println(program.getName() + ".exe");
             }

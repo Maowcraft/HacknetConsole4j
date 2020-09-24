@@ -45,7 +45,11 @@ public class AnalyzeCommand implements Command {
                     }
                     i++;
                 }
+            } else {
+                System.out.println("This node does not have a firewall.");
             }
+        } else {
+            System.out.println("You are not connected to a node.");
         }
     }
 
@@ -66,5 +70,9 @@ public class AnalyzeCommand implements Command {
         StringBuilder builder = new StringBuilder(string);
         builder.setCharAt(index, character);
         return builder.toString();
+    }
+
+    public void setIterations(int iterations) {
+        this.iterations = iterations;
     }
 }

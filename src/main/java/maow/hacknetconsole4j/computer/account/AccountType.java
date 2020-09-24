@@ -5,4 +5,5 @@ public enum AccountType {
     ALL,
     MAIL,
     MISSIONLIST,
+    NONE,
 }

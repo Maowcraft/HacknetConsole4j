@@ -1,28 +1,21 @@
 package maow.hacknetconsole4j.registry;
 
 import maow.hacknetconsole4j.command.Command;
-import maow.hacknetconsole4j.computer.program.Program;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class CommandRegistry {
-    private static final List<Command> commands = new ArrayList<>();
+    private static final HashMap<String, Command> commands = new HashMap<>();
 
     public static void register(Command command) {
-        commands.add(command);
+        commands.put(command.getName(), command);
     }
 
     public static Command get(String name) {
-        for (Command command : commands) {
-            if (command.getName().equals(name)) {
-                return command;
-            }
-        }
-        return null;
+        return commands.get(name);
     }
 
-    public static List<Command> getAll() {
+    public static HashMap<String, Command> getAll() {
         return commands;
     }
 }

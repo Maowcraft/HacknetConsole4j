@@ -2,26 +2,20 @@ package maow.hacknetconsole4j.registry;
 
 import maow.hacknetconsole4j.computer.program.Program;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class ProgramRegistry {
-    private static final List<Program> programs = new ArrayList<>();
+    private static final HashMap<String, Program> programs = new HashMap<>();
 
     public static void register(Program program) {
-        programs.add(program);
+        programs.put(program.getName(), program);
     }
 
     public static Program get(String name) {
-        for (Program program : programs) {
-            if (program.getName().equals(name)) {
-                return program;
-            }
-        }
-        return null;
+        return programs.get(name);
     }
 
-    public static List<Program> getAll() {
+    public static HashMap<String, Program> getAll() {
         return programs;
     }
 }
